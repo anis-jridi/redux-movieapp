@@ -1,4 +1,9 @@
-import { ADD_MOVIE, DELETE_MOVIE } from "./actionType";
+import {
+  ADD_MOVIE,
+  DELETE_MOVIE,
+  FILTER_MOVIE,
+  EDIT_MOVIE,
+} from "./actionType";
 
 const init = {
   data: [
@@ -88,6 +93,28 @@ export const reducerOfData = (state = init, { type, payload }) => {
       return {
         ...state,
         data: state.data.filter((el) => el.id !== payload),
+      };
+    case ADD_MOVIE:
+      return {
+        ...state,
+        data: [...state.data, payload],
+      };
+    case FILTER_MOVIE:
+      return {
+        ...state,
+        data: state.data.filter((el) =>
+          el.name.toLowerCase().includes(payload.toLowerCase())
+        ),
+      };
+    case EDIT_MOVIE:
+      return {
+        ...state,
+        data: {
+          ...state,
+          data: state.data.map((el) =>
+            el.id === payload.id ? { ...el, ...payload } : el
+          ),
+        },
       };
 
     default:
